@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 // using UnityEngine.InputSystem;
 
@@ -5,17 +6,25 @@ namespace MazeProject
 {    public class Player : MonoBehaviour
     {
         public float MoveSpeed = 1f;
+        public MainUI MainUI;
 
         private Rigidbody rigidbody;
+        public bool isGoal;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
+            // isGoal = false;
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (MainUI.isFinished)
+            {
+                // クリア or ゲームオーバー後は表示ロック
+                return;
+            }
             UpdateInput();
         }
 
@@ -27,9 +36,12 @@ namespace MazeProject
             // Debug.Log("Horizontal:" + horizontal);
             // Debug.Log("Vertical:" + vertical);
 
+
             var movement = new Vector3(horizontal, 0, vertical) * MoveSpeed;
-            //transform.position += movement * Time.deltaTime;
+       
             rigidbody.linearVelocity = movement;
+            // }
+            
         }
         private void OnLeft()
         {
@@ -51,10 +63,11 @@ namespace MazeProject
         // {
         //     Debug.Log("OnHorizontal:" + context.ReadValue<Int>());
         // }
-        private void OnTriggerEnter(Collider other){
+        private void OnTriggerStay(Collider other){
             var goal = other.GetComponent<Goal>();
-            if(goal != null){
-                Debug.Log("ゴールに到達!");
+            if (goal != null)
+            {
+                isGoal = true;
             }
         }
     }

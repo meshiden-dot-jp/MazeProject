@@ -6,12 +6,18 @@ namespace MazeProject
     {
         public int MazeWidth = 11;
         public int MazeHeight = 11;
+
         public Transform MazeRoot;
         public GameObject WallPrefab;
-        public Player PlayerPrefab;
-        public float WallSize = 1f;
         public GameObject FloorPrefab;
+        public float WallSize = 1f;
+
+        public MainUI MainUI;
+
+        public Player PlayerPrefab;
         public GameObject GoalPrefab;
+
+        public CameraManager CameraManager;
         private readonly MazeUtility mazeUtility = new();
         public Player Player { get; private set; }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,6 +29,8 @@ namespace MazeProject
                 new Vector3(mazeUtility.StartX * WallSize, 0, mazeUtility.StartY * WallSize),
                 Quaternion.identity
                 );
+            MainUI.Player = Player;
+            CameraManager.Follow = Player.transform;
         }
 
         // Update is called once per frame
