@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 // using UnityEngine.InputSystem;
 
@@ -6,6 +5,7 @@ namespace MazeProject
 {    public class Player : MonoBehaviour
     {
         public float MoveSpeed = 1f;
+        public Animator Animator;
         public MainUI MainUI;
 
         private Rigidbody rigidbody;
@@ -15,6 +15,10 @@ namespace MazeProject
         {
             rigidbody = GetComponent<Rigidbody>();
             // isGoal = false;
+            if (rigidbody == null)
+            {
+                Debug.LogError("Player: Rigidbody がこのオブジェクトに付いていません！");
+            }
         }
 
         // Update is called once per frame
@@ -38,8 +42,23 @@ namespace MazeProject
 
 
             var movement = new Vector3(horizontal, 0, vertical) * MoveSpeed;
-       
-            rigidbody.linearVelocity = movement;
+
+            if (rigidbody != null)
+            {
+                rigidbody.linearVelocity = movement;
+            }
+
+
+            if (movement.magnitude > 0)
+            {
+                transform.localPosition += movement;
+                transform.forward = movement;
+                Animator.SetBool("IsMove", true);
+            }
+            else
+            {
+                Animator.SetBool("IsMove", false);
+            }
             // }
             
         }
@@ -63,7 +82,8 @@ namespace MazeProject
         // {
         //     Debug.Log("OnHorizontal:" + context.ReadValue<Int>());
         // }
-        private void OnTriggerStay(Collider other){
+        private void OnTriggerStay(Collider other)
+        {
             var goal = other.GetComponent<Goal>();
             if (goal != null)
             {
