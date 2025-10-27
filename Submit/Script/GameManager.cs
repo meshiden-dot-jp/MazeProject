@@ -26,7 +26,7 @@ namespace MazeProject
             CreateMaze();
             Player = Instantiate(
                 PlayerPrefab,
-                new Vector3(mazeUtility.StartX * WallSize, 0, mazeUtility.StartY * WallSize),
+                new Vector3(mazeUtility.StartX * WallSize, -0.5f, mazeUtility.StartY * WallSize),
                 Quaternion.identity
                 );
             MainUI.Player = Player;
@@ -75,7 +75,7 @@ namespace MazeProject
 
             var floor = Instantiate(
                 FloorPrefab,
-                new Vector3((MazeWidth - 1) * WallSize * 0.5f, 0, (MazeHeight - 1) * WallSize * 0.5f),
+                new Vector3((MazeWidth - 1) * WallSize * 0.5f, -0.5f, (MazeHeight - 1) * WallSize * 0.5f),
                 Quaternion.identity,
                 MazeRoot
                 );
